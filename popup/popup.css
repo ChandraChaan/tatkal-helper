@@ -1,0 +1,48 @@
+:root { --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --muted: #64748b; --line: #e2e8f0; --brand: #0e7490; --brand-2: #155e75; --ok: #15803d; --warn: #b45309; --err: #b91c1c; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0b1220; --card: #111a2b; --text: #e2e8f0; --muted: #94a3b8; --line: #243041; --brand: #22b8d6; --brand-2: #0e7490; }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 400px; max-height: 600px; background: var(--bg); color: var(--text); font: 13px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+.top { position: sticky; top: 0; z-index: 2; background: var(--card); border-bottom: 1px solid var(--line); }
+.brand { display: flex; align-items: center; gap: 8px; padding: 10px 14px 6px; font-weight: 700; font-size: 15px; }
+.logo { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 7px; background: var(--brand); color: #fff; font-weight: 800; }
+.tabs { display: flex; padding: 0 8px; }
+.tab { flex: 1; background: none; border: 0; border-bottom: 2px solid transparent; color: var(--muted); padding: 8px 4px; font-weight: 600; font-size: 12.5px; cursor: pointer; }
+.tab.active { color: var(--brand); border-bottom-color: var(--brand); }
+main { padding: 12px 14px 16px; overflow-y: auto; max-height: 520px; }
+.panel { display: none; gap: 10px; }
+.panel.active { display: grid; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: grid; gap: 8px; }
+.lbl { font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); font-weight: 700; }
+.muted { color: var(--muted); } .small { font-size: 12px; } p { margin: 0; }
+.row { display: flex; align-items: center; } .between { justify-content: space-between; } .gap { gap: 8px; } .end { justify-content: flex-end; } .grow { flex: 1; }
+.btn { border: 1px solid var(--line); background: var(--card); color: var(--text); border-radius: 9px; padding: 8px 12px; font-weight: 600; font-size: 13px; cursor: pointer; }
+.btn:hover { border-color: var(--brand); }
+.btn.primary { background: var(--brand); border-color: var(--brand); color: #fff; } .btn.primary:hover { background: var(--brand-2); }
+.btn.small { padding: 5px 10px; font-size: 12px; }
+.btn.link { background: none; border: 0; color: var(--brand); padding: 2px 0; justify-self: start; }
+.btn.danger { color: var(--err); }
+.sel, input, select { border: 1px solid var(--line); border-radius: 8px; padding: 7px 9px; background: var(--card); color: var(--text); font: inherit; width: 100%; }
+.sel { width: auto; max-width: 220px; }
+.summary { font-size: 13px; }
+.countdown { text-align: center; }
+.cd-big { font-size: 34px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.cd-big.soon { color: var(--warn); } .cd-big.open { color: var(--ok); }
+.status { font-size: 12.5px; min-height: 0; } .status.ok { color: var(--ok); } .status.warn { color: var(--warn); } .status.err { color: var(--err); }
+.checklist { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.checklist label { display: flex; gap: 8px; align-items: flex-start; } .checklist input { width: auto; margin-top: 2px; }
+.list { display: grid; gap: 8px; }
+.item { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; display: grid; grid-template-columns: 1fr auto; gap: 4px 8px; align-items: center; }
+.item.active { border-color: var(--brand); box-shadow: inset 3px 0 0 var(--brand); }
+.item .name { font-weight: 600; } .item .meta { color: var(--muted); font-size: 12px; grid-column: 1; }
+.item .acts { grid-column: 2; grid-row: 1 / span 2; display: flex; gap: 4px; }
+.item .acts button { padding: 4px 8px; font-size: 12px; }
+.empty { color: var(--muted); font-size: 12.5px; padding: 8px 2px; }
+.form { gap: 10px; } .hidden { display: none !important; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; } .span2 { grid-column: 1 / -1; }
+.field { display: grid; gap: 4px; font-size: 12px; color: var(--muted); } .field input, .field select { color: var(--text); font-size: 13px; }
+.picker { display: grid; gap: 4px; } .picker label { display: flex; gap: 8px; align-items: center; } .picker input { width: auto; }
+.prefs { display: grid; gap: 6px; } .prefs label { display: flex; gap: 8px; align-items: center; justify-content: space-between; } .prefs input[type=checkbox] { width: auto; order: -1; } .prefs select { width: auto; }
+.prefs label:has(input[type=checkbox]) { justify-content: flex-start; }
+.toggle { display: flex; gap: 8px; align-items: center; } .toggle input { width: auto; }

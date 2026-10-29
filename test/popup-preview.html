@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Popup preview (fake chrome API)</title>
+<link rel="stylesheet" href="../popup/popup.css">
+<style>html,body{margin:0}body{border:1px solid #999}</style>
+</head>
+<body>
+<script>
+/* Stand-in for chrome.* so popup.js can be previewed outside the extension. Seeded with sample data. */
+(function(){
+  const store = {
+    passengers: [
+      { id: 'p1', name: 'RAVI KUMAR', age: '34', gender: 'M', berth: 'LB', food: 'V', idType: '', idNumber: '' },
+      { id: 'p2', name: 'ANITHA DEVI', age: '31', gender: 'F', berth: 'SU', food: 'N', idType: '', idNumber: '' }
+    ],
+    trips: [{ id: 't1', label: 'Diwali home trip', from: 'SC', to: 'NDLS', date: '2026-11-20', train: '12723', cls: '3A', quota: 'TQ', mobile: '9876543210', passengerIds: ['p1','p2'], autoUpgrade: true, confirmOnly: false, insurance: 'no', payment: 'upi' }],
+    activeTripId: 't1', settings: { alerts: true, alertMinutes: [10, 2], showWidget: true, fillPayment: true }, checklist: { login: true }
+  };
+  window.chrome = {
+    storage: { local: { get: async (k) => k === null ? { ...store } : Object.fromEntries((Array.isArray(k) ? k : [k]).map((x) => [x, store[x]])), set: async (o) => Object.assign(store, o) } },
+    tabs: { query: async () => [{ id: 1, url: 'https://www.irctc.co.in/nget/booking/psgninput' }], sendMessage: async () => ({ ok: true, filled: ['RAVI KUMAR', 'ANITHA DEVI'], warnings: [] }), create: () => {} },
+    notifications: { getPermissionLevel: (cb) => cb('granted') }
+  };
+})();
+</script>
+<div id="mount"></div>
+<script>
+fetch('../popup/popup.html').then(r => r.text()).then(html => {
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  document.getElementById('mount').replaceWith(...Array.from(doc.body.children).filter(n => n.tagName !== 'SCRIPT'));
+  const s1 = document.createElement('script'); s1.src = '../shared/tatkal.js';
+  s1.onload = () => { const s2 = document.createElement('script'); s2.src = '../popup/popup.js'; document.body.appendChild(s2); };
+  document.body.appendChild(s1);
+});
+</script>
+</body></html>

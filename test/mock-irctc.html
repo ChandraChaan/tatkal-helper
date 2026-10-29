@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mock IRCTC pages for Tatkal Helper tests</title>
+<style>
+  body { font: 14px/1.4 system-ui, sans-serif; margin: 0; padding: 20px; color: #222; }
+  h2 { margin: 24px 0 8px; } fieldset { border: 1px solid #ccc; padding: 12px; margin-bottom: 16px; }
+  app-passenger { display: block; border: 1px dashed #aaa; padding: 8px; margin: 6px 0; }
+  .ui-autocomplete-panel, .ui-dropdown-panel { position: absolute; background: #fff; border: 1px solid #999; display: none; z-index: 9; }
+  .ui-autocomplete-panel.show, .ui-dropdown-panel.show { display: block; }
+  .ui-autocomplete-panel li, .ui-dropdown-panel li { list-style: none; padding: 4px 8px; cursor: pointer; }
+  .ui-chkbox-box, .ui-radiobutton-box { display: inline-block; width: 14px; height: 14px; border: 1px solid #555; vertical-align: middle; margin-right: 4px; }
+  .ui-chkbox-box.ui-state-active, .ui-radiobutton-box.ui-state-active { background: #0e7490; }
+  .ui-dropdown { display: inline-block; border: 1px solid #777; padding: 4px 8px; min-width: 180px; cursor: pointer; position: relative; }
+  #results { white-space: pre-wrap; font-family: ui-monospace, monospace; background: #f3f4f6; padding: 12px; border-radius: 8px; }
+  .pass { color: #15803d; } .fail { color: #b91c1c; font-weight: bold; }
+</style>
+</head>
+<body>
+<h1>Mock IRCTC</h1>
+<p>Replicates the field structure of the real train search and passenger pages so the fill logic can be exercised without logging in. Buttons below run the tests.</p>
+<button id="run">Run all tests</button>
+<div id="results">Not run yet.</div>
+
+<h2>Train search page (mock)</h2>
+<fieldset id="search-page">
+  <p-autocomplete id="origin" formcontrolname="origin">
+    <input type="text" class="ui-autocomplete-input" placeholder="From*" autocomplete="off">
+    <div class="ui-autocomplete-panel"><ul></ul></div>
+  </p-autocomplete>
+  <p-autocomplete id="destination" formcontrolname="destination">
+    <input type="text" class="ui-autocomplete-input" placeholder="To*" autocomplete="off">
+    <div class="ui-autocomplete-panel"><ul></ul></div>
+  </p-autocomplete>
+  <p-calendar id="jDate"><input type="text" placeholder="Journey Date(dd-mm-yyyy)*"></p-calendar>
+  <p-dropdown id="journeyClass" formcontrolname="journeyClass">
+    <div class="ui-dropdown"><span class="ui-dropdown-label">All Classes</span><div class="ui-dropdown-trigger">▾</div>
+      <div class="ui-dropdown-panel"><ul>
+        <li>All Classes</li><li>Anubhuti Class (EA)</li><li>AC First Class (1A)</li><li>Exec. Chair Car (EC)</li><li>AC 2 Tier (2A)</li><li>First Class (FC)</li><li>AC 3 Tier (3A)</li><li>AC 3 Economy (3E)</li><li>AC Chair car (CC)</li><li>Sleeper (SL)</li><li>Second Sitting (2S)</li>
+      </ul></div></div>
+  </p-dropdown>
+  <p-dropdown id="journeyQuota" formcontrolname="journeyQuota">
+    <div class="ui-dropdown"><span class="ui-dropdown-label">GENERAL</span><div class="ui-dropdown-trigger">▾</div>
+      <div class="ui-dropdown-panel"><ul><li>GENERAL</li><li>LADIES</li><li>LOWER BERTH/SR.CITIZEN</li><li>PERSON WITH DISABILITY</li><li>DUTY PASS</li><li>TATKAL</li><li>PREMIUM TATKAL</li></ul></div></div>
+  </p-dropdown>
+  <button type="button">Search</button>
+</fieldset>
+
+<h2>Passenger page (mock)</h2>
+<fieldset id="passenger-page">
+  <div id="rows">
+    <app-passenger>
+      <p-autocomplete formcontrolname="passengerName"><input type="text" class="ui-autocomplete-input" placeholder="Name"></p-autocomplete>
+      <input type="text" formcontrolname="passengerAge" placeholder="Age">
+      <select formcontrolname="passengerGender"><option value="">Gender</option><option value="M">Male</option><option value="F">Female</option><option value="T">Transgender</option></select>
+      <select formcontrolname="passengerBerthChoice"><option value="">No Preference</option><option value="LB">Lower</option><option value="MB">Middle</option><option value="UB">Upper</option><option value="SL">Side Lower</option><option value="SU">Side Upper</option></select>
+      <select formcontrolname="passengerFoodChoice"><option value="">Food</option><option value="V">Veg</option><option value="N">Non Veg</option><option value="J">Jain</option><option value="D">No Food</option></select>
+      <select formcontrolname="passengerCardType"><option value="">ID Card Type</option><option value="AADHAAR">Aadhaar Card</option><option value="PAN">PAN Card</option></select>
+      <input type="text" formcontrolname="passengerCardNumber" placeholder="ID Number">
+    </app-passenger>
+  </div>
+  <a href="javascript:void(0)" id="add-psgn">+ Add Passenger</a>
+  <div>
+    <input type="text" id="mobileNumber" formcontrolname="mobileNumber" placeholder="Mobile No">
+  </div>
+  <div>
+    <p-checkbox formcontrolname="autoUpgradationSelected"><div class="ui-chkbox"><div class="ui-chkbox-box"></div><label>Consider for Auto Upgradation</label></div></p-checkbox><br>
+    <p-checkbox formcontrolname="confirmberths"><div class="ui-chkbox"><div class="ui-chkbox-box"></div><label>Book only if confirm berths are allotted</label></div></p-checkbox>
+  </div>
+  <div id="insurance">
+    <strong>Travel Insurance</strong>
+    <p-radiobutton name="ins"><div class="ui-radiobutton-box"></div><label>Yes, and I accept the terms &amp; conditions</label></p-radiobutton>
+    <p-radiobutton name="ins"><div class="ui-radiobutton-box"></div><label>No, I don't want travel insurance</label></p-radiobutton>
+  </div>
+  <div id="payment">
+    <strong>Payment Mode</strong>
+    <p-radiobutton name="pay"><div class="ui-radiobutton-box"></div><label>Pay through BHIM/UPI</label></p-radiobutton>
+    <p-radiobutton name="pay"><div class="ui-radiobutton-box"></div><label>Pay through Credit & Debit Cards / Net Banking / Wallets</label></p-radiobutton>
+  </div>
+  <button type="button">Continue</button>
+</fieldset>
+
+<script>
+/* Minimal behaviour mimicking PrimeNG/Angular so the fill code is exercised honestly. */
+(function () {
+  const STATIONS = { SC: 'SECUNDERABAD JN - SC', NDLS: 'NEW DELHI - NDLS', MAS: 'MGR CHENNAI CTL - MAS', HYB: 'HYDERABAD DECAN - HYB' };
+  document.querySelectorAll('p-autocomplete[id]').forEach((ac) => {
+    const input = ac.querySelector('input'), panel = ac.querySelector('.ui-autocomplete-panel'), ul = panel.querySelector('ul');
+    input.addEventListener('input', () => {
+      const v = input.value.trim().toUpperCase();
+      ul.innerHTML = Object.keys(STATIONS).filter((k) => k.startsWith(v) || STATIONS[k].includes(v)).map((k) => `<li data-code="${k}">${STATIONS[k]}</li>`).join('');
+      panel.classList.toggle('show', !!(v && ul.children.length));
+    });
+    ul.addEventListener('click', (e) => { const li = e.target.closest('li'); if (!li) return; input.value = STATIONS[li.dataset.code]; ac.dataset.selected = li.dataset.code; panel.classList.remove('show'); });
+  });
+  document.querySelectorAll('p-dropdown').forEach((dd) => {
+    const host = dd.querySelector('.ui-dropdown'), panel = dd.querySelector('.ui-dropdown-panel'), label = dd.querySelector('.ui-dropdown-label');
+    host.addEventListener('click', (e) => { if (e.target.closest('li')) return; panel.classList.toggle('show'); });
+    panel.addEventListener('click', (e) => { const li = e.target.closest('li'); if (!li) return; label.textContent = li.textContent; dd.dataset.selected = li.textContent; panel.classList.remove('show'); e.stopPropagation(); });
+  });
+  document.querySelectorAll('.ui-chkbox-box').forEach((b) => b.addEventListener('click', () => b.classList.toggle('ui-state-active')));
+  document.querySelectorAll('p-radiobutton').forEach((r) => {
+    const box = r.querySelector('.ui-radiobutton-box'), lab = r.querySelector('label');
+    const sel = () => { document.querySelectorAll(`p-radiobutton[name="${r.getAttribute('name')}"] .ui-radiobutton-box`).forEach((x) => x.classList.remove('ui-state-active')); box.classList.add('ui-state-active'); };
+    box.addEventListener('click', sel); lab.addEventListener('click', sel);
+  });
+  // Angular-style model tracking: record last value seen through an 'input' event (not direct .value assignment)
+  document.addEventListener('input', (e) => { if (e.target.matches('input')) e.target.dataset.model = e.target.value; }, true);
+  document.addEventListener('change', (e) => { if (e.target.matches('select')) e.target.dataset.model = e.target.value; }, true);
+  const tmpl = document.querySelector('app-passenger').cloneNode(true);
+  document.getElementById('add-psgn').addEventListener('click', () => {
+    const rows = document.getElementById('rows');
+    if (rows.children.length >= 4) return; // Tatkal limit
+    rows.appendChild(tmpl.cloneNode(true));
+  });
+})();
+</script>
+<script src="../shared/tatkal.js"></script>
+<script src="../content/fill-core.js"></script>
+<script>
+(async function () {
+  const out = document.getElementById('results');
+  const lines = []; let fails = 0;
+  const ok = (cond, msg) => { lines.push((cond ? 'PASS  ' : 'FAIL  ') + msg); if (!cond) fails++; };
+  const q = (s, sc) => (sc || document).querySelector(s);
+
+  async function run() {
+    lines.length = 0; fails = 0;
+    const F = window.TatkalFill, S = window.TatkalShared;
+    const trip = { from: 'SC', to: 'NDLS', date: '2026-11-20', cls: '3A', quota: 'TQ', mobile: '9876543210', autoUpgrade: true, confirmOnly: false, insurance: 'no', payment: 'upi', passengerIds: [] };
+    const passengers = [
+      { name: 'RAVI KUMAR', age: '34', gender: 'M', berth: 'LB', food: 'V', idType: 'AADHAAR', idNumber: '123456789012' },
+      { name: 'ANITHA DEVI', age: '31', gender: 'F', berth: 'SU', food: 'N', idType: '', idNumber: '' },
+      { name: 'ARJUN', age: '6', gender: 'M', berth: '', food: 'J', idType: '', idNumber: '' }
+    ];
+
+    // --- search page ---
+    const sr = await F.fillSearchPage(trip);
+    ok(sr.ok, 'search: fill returned ok');
+    ok(q('#origin').dataset.selected === 'SC', 'search: origin picked from suggestion list (SC)');
+    ok(q('#destination').dataset.selected === 'NDLS', 'search: destination picked from suggestion list (NDLS)');
+    ok(q('#jDate input').dataset.model === '20/11/2026', 'search: date typed as dd/mm/yyyy through input event');
+    ok(q('#journeyClass').dataset.selected === 'AC 3 Tier (3A)', 'search: class dropdown set to AC 3 Tier (3A)');
+    ok(q('#journeyQuota').dataset.selected === 'TATKAL', 'search: quota dropdown set to TATKAL');
+    ok(sr.warnings.length === 0, 'search: no warnings (' + sr.warnings.join('; ') + ')');
+
+    // --- passenger page ---
+    const pr = await F.fillPassengerPage(trip, passengers, { fillPayment: true });
+    ok(pr.ok, 'passenger: fill returned ok');
+    const rows = Array.from(document.querySelectorAll('app-passenger'));
+    ok(rows.length === 3, 'passenger: 3 rows exist after "+ Add Passenger" clicks (got ' + rows.length + ')');
+    passengers.forEach((p, i) => {
+      const r = rows[i]; if (!r) return;
+      ok(q('p-autocomplete input', r).dataset.model === p.name, `passenger ${i + 1}: name via input event = ${p.name}`);
+      ok(q('[formcontrolname="passengerAge"]', r).dataset.model === p.age, `passenger ${i + 1}: age = ${p.age}`);
+      ok(q('[formcontrolname="passengerGender"]', r).dataset.model === p.gender, `passenger ${i + 1}: gender = ${p.gender}`);
+      ok(q('[formcontrolname="passengerBerthChoice"]', r).value === p.berth, `passenger ${i + 1}: berth = "${p.berth}"`);
+      ok(q('[formcontrolname="passengerFoodChoice"]', r).dataset.model === p.food, `passenger ${i + 1}: food = ${p.food}`);
+    });
+    ok(q('[formcontrolname="passengerCardType"]', rows[0]).value === 'AADHAAR' && q('[formcontrolname="passengerCardNumber"]', rows[0]).dataset.model === '123456789012', 'passenger 1: ID type and number filled');
+    ok(q('#mobileNumber').dataset.model === '9876543210', 'contact: mobile number filled');
+    ok(q('p-checkbox[formcontrolname="autoUpgradationSelected"] .ui-chkbox-box').classList.contains('ui-state-active'), 'prefs: auto upgradation ticked');
+    ok(!q('p-checkbox[formcontrolname="confirmberths"] .ui-chkbox-box').classList.contains('ui-state-active'), 'prefs: confirm-only left unticked');
+    ok(q('#insurance p-radiobutton:nth-of-type(2) .ui-radiobutton-box').classList.contains('ui-state-active'), 'prefs: insurance = No selected');
+    ok(q('#payment p-radiobutton:nth-of-type(1) .ui-radiobutton-box').classList.contains('ui-state-active'), 'prefs: BHIM/UPI pre-selected');
+    ok(pr.filled.length === 3, 'passenger: reported 3 filled');
+    ok(pr.warnings.length === 0, 'passenger: no warnings (' + pr.warnings.join('; ') + ')');
+
+    // idempotent re-run: should not add rows or flip checkboxes
+    const pr2 = await F.fillPassengerPage(trip, passengers, { fillPayment: true });
+    ok(document.querySelectorAll('app-passenger').length === 3, 'passenger: second run does not add rows');
+    ok(q('p-checkbox[formcontrolname="autoUpgradationSelected"] .ui-chkbox-box').classList.contains('ui-state-active'), 'passenger: second run keeps auto upgrade ticked');
+    ok(pr2.ok && pr2.warnings.length === 0, 'passenger: second run clean');
+
+    // --- time helpers ---
+    const w = S.nextWindow({ cls: '3A', quota: 'TQ', date: '2026-11-20' }, Date.UTC(2026, 10, 1));
+    ok(w.kind === 'journey' && w.bookingDate === '19/11/2026' && w.hour === 10, 'time: AC Tatkal window = 19/11/2026 10:00 IST (' + JSON.stringify(w) + ')');
+    const ist = new Date(w.at).toLocaleString('en-GB', { timeZone: 'Asia/Kolkata', hour12: false });
+    ok(/19\/11\/2026, 10:00:00/.test(ist), 'time: window epoch renders as 10:00:00 IST (' + ist + ')');
+    const w2 = S.nextWindow({ cls: 'SL', quota: 'TQ', date: '2026-11-20' }, Date.UTC(2026, 10, 1));
+    ok(w2.hour === 11, 'time: non-AC window hour = 11');
+    const w3 = S.nextWindow({ cls: 'SL', quota: 'TQ', date: '2026-01-02' }, Date.UTC(2026, 10, 1));
+    ok(w3.kind === 'passed', 'time: past journey reports passed');
+    const w4 = S.nextWindow({ cls: '3A', quota: 'GN', date: '2026-11-20' }, Date.UTC(2026, 10, 1));
+    ok(w4.kind === 'general', 'time: general quota has no window');
+    const w5 = S.nextWindow({ cls: '3A', quota: 'TQ' }, Date.UTC(2026, 10, 1, 3, 0)); // 08:30 IST
+    ok(w5.kind === 'next' && /01\/11\/2026, 10:00:00/.test(new Date(w5.at).toLocaleString('en-GB', { timeZone: 'Asia/Kolkata', hour12: false })), 'time: no date -> next 10:00 IST today');
+    const w6 = S.nextWindow({ cls: '3A', quota: 'TQ' }, Date.UTC(2026, 10, 1, 6, 0)); // 11:30 IST
+    ok(/02\/11\/2026, 10:00:00/.test(new Date(w6.at).toLocaleString('en-GB', { timeZone: 'Asia/Kolkata', hour12: false })), 'time: after window -> tomorrow 10:00 IST');
+    ok(S.fmtCountdown(3723000) === '01:02:03' && S.fmtCountdown(90000000) === '1d 01:00:00', 'time: countdown formatting');
+
+    out.innerHTML = lines.map((l) => `<div class="${l.startsWith('PASS') ? 'pass' : 'fail'}">${l.replace(/</g, '&lt;')}</div>`).join('') + `<hr><strong>${fails === 0 ? 'ALL PASSED' : fails + ' FAILED'}</strong> (${lines.length} checks)`;
+    window.__tatkalTestResult = { fails, total: lines.length, lines };
+  }
+  document.getElementById('run').addEventListener('click', run);
+  if (location.hash === '#auto') run();
+})();
+</script>
+</body>
+</html>

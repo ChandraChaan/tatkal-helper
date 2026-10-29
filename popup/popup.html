@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tatkal Helper</title>
+<link rel="stylesheet" href="popup.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="logo">T</span><span>Tatkal Helper</span></div>
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="home">Home</button>
+    <button class="tab" data-tab="passengers">Passengers</button>
+    <button class="tab" data-tab="trips">Trips</button>
+    <button class="tab" data-tab="settings">Settings</button>
+  </nav>
+</header>
+
+<main>
+  <!-- HOME -->
+  <section id="tab-home" class="panel active">
+    <div class="card" id="home-trip-card">
+      <div class="row between">
+        <label class="lbl">Active trip</label>
+        <select id="active-trip" class="sel"></select>
+      </div>
+      <div id="home-trip-summary" class="summary muted">No trip yet. Add one in the Trips tab.</div>
+    </div>
+
+    <div class="card countdown">
+      <div class="lbl" id="cd-label">Next Tatkal window</div>
+      <div class="cd-big" id="cd-value">--:--:--</div>
+      <div class="muted small" id="cd-sub"></div>
+    </div>
+
+    <div class="card">
+      <div class="row gap">
+        <button id="btn-fill" class="btn primary grow">Fill this page</button>
+        <button id="btn-open" class="btn">Open IRCTC</button>
+      </div>
+      <div id="fill-status" class="status"></div>
+      <p class="muted small">Works on the train search page and the passenger details page. You press Search, Continue, the CAPTCHA and Pay yourself.</p>
+    </div>
+
+    <div class="card">
+      <div class="lbl">Pre-window checklist</div>
+      <ul class="checklist" id="checklist">
+        <li><label><input type="checkbox" data-k="login"> Logged in to IRCTC (do this by 9:55 / 10:55)</label></li>
+        <li><label><input type="checkbox" data-k="master"> Passengers added to IRCTC Master List as backup</label></li>
+        <li><label><input type="checkbox" data-k="search"> Train searched, on the train list before the window</label></li>
+        <li><label><input type="checkbox" data-k="upi"> UPI app unlocked on phone, balance checked</label></li>
+        <li><label><input type="checkbox" data-k="quiet"> Other IRCTC tabs closed (one session only)</label></li>
+      </ul>
+      <button id="btn-reset-check" class="btn link">Reset checklist</button>
+    </div>
+  </section>
+
+  <!-- PASSENGERS -->
+  <section id="tab-passengers" class="panel">
+    <div class="row between">
+      <div class="lbl">Saved passengers</div>
+      <button id="btn-add-passenger" class="btn primary small">+ Add</button>
+    </div>
+    <div id="passenger-list" class="list"></div>
+    <form id="passenger-form" class="card form hidden">
+      <input type="hidden" name="id">
+      <div class="grid2">
+        <label class="field span2">Full name (as on ID)<input name="name" required maxlength="16" placeholder="Max 16 characters"></label>
+        <label class="field">Age<input name="age" type="number" min="0" max="125" required></label>
+        <label class="field">Gender<select name="gender"><option value="M">Male</option><option value="F">Female</option><option value="T">Transgender</option></select></label>
+        <label class="field">Berth preference<select name="berth" id="berth-opts"></select></label>
+        <label class="field">Food<select name="food" id="food-opts"></select></label>
+        <label class="field">ID type (optional)<select name="idType" id="id-opts"></select></label>
+        <label class="field">ID number<input name="idNumber" placeholder="Only if asked"></label>
+      </div>
+      <div class="row gap end">
+        <button type="button" class="btn" id="btn-cancel-passenger">Cancel</button>
+        <button type="submit" class="btn primary">Save passenger</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- TRIPS -->
+  <section id="tab-trips" class="panel">
+    <div class="row between">
+      <div class="lbl">Trips</div>
+      <button id="btn-add-trip" class="btn primary small">+ Add</button>
+    </div>
+    <div id="trip-list" class="list"></div>
+    <form id="trip-form" class="card form hidden">
+      <input type="hidden" name="id">
+      <div class="grid2">
+        <label class="field span2">Label<input name="label" placeholder="e.g. Diwali home trip"></label>
+        <label class="field">From (station code)<input name="from" placeholder="SC" required style="text-transform:uppercase"></label>
+        <label class="field">To (station code)<input name="to" placeholder="NDLS" required style="text-transform:uppercase"></label>
+        <label class="field">Journey date<input name="date" type="date"></label>
+        <label class="field">Train no. (note only)<input name="train" placeholder="12723"></label>
+        <label class="field">Class<select name="cls" id="class-opts"></select></label>
+        <label class="field">Quota<select name="quota" id="quota-opts"></select></label>
+        <label class="field span2">Mobile number<input name="mobile" inputmode="numeric" pattern="[0-9]{10}" placeholder="10 digits"></label>
+      </div>
+      <div class="lbl">Passengers on this trip (max 4 for Tatkal)</div>
+      <div id="trip-passenger-picker" class="picker"></div>
+      <div class="lbl">Booking preferences</div>
+      <div class="prefs">
+        <label><input type="checkbox" name="autoUpgrade"> Consider for auto upgradation</label>
+        <label><input type="checkbox" name="confirmOnly"> Book only if confirm berths are allotted</label>
+        <label>Travel insurance
+          <select name="insurance"><option value="no">No</option><option value="yes">Yes</option><option value="">Leave as is</option></select></label>
+        <label>Payment option to pre-select
+          <select name="payment"><option value="upi">BHIM / UPI</option><option value="card">Cards / Net banking</option><option value="">Leave as is</option></select></label>
+      </div>
+      <div class="row gap end">
+        <button type="button" class="btn" id="btn-cancel-trip">Cancel</button>
+        <button type="submit" class="btn primary">Save trip</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="tab-settings" class="panel">
+    <div class="card">
+      <label class="toggle"><input type="checkbox" id="set-alerts"> Notify me before the Tatkal window</label>
+      <label class="field">Alert minutes before (comma separated)<input id="set-alert-minutes" placeholder="10, 2"></label>
+      <label class="toggle"><input type="checkbox" id="set-widget"> Show floating panel on IRCTC pages</label>
+      <label class="toggle"><input type="checkbox" id="set-payment"> Pre-select payment option on passenger page</label>
+      <div id="settings-status" class="status"></div>
+    </div>
+    <div class="card">
+      <div class="lbl">Backup</div>
+      <div class="row gap">
+        <button id="btn-export" class="btn">Export JSON</button>
+        <button id="btn-import" class="btn">Import JSON</button>
+        <input type="file" id="import-file" accept="application/json" hidden>
+      </div>
+      <p class="muted small">Data lives only in this browser. Export before reinstalling.</p>
+    </div>
+    <div class="card muted small">
+      <p><strong>How it works.</strong> This extension only fills form fields on pages you already opened in your own logged-in session. It never logs in, never solves CAPTCHAs, never submits forms and never touches payment details. Keep it that way: IRCTC blocks accounts that use automated booking.</p>
+      <p>Tatkal opens at 10:00 IST (AC) and 11:00 IST (non-AC), one day before the journey date.</p>
+    </div>
+  </section>
+</main>
+
+<script src="../shared/tatkal.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>

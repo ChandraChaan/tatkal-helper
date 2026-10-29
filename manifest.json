@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Tatkal Helper",
+  "version": "1.0.0",
+  "description": "Saved passengers, one-click form fill, and Tatkal window countdown for IRCTC. You do every click, CAPTCHA and payment yourself.",
+  "minimum_chrome_version": "110",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": ["storage", "alarms", "notifications", "activeTab", "scripting"],
+  "host_permissions": ["https://www.irctc.co.in/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Tatkal Helper",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.irctc.co.in/*"],
+      "js": ["shared/tatkal.js", "content/fill-core.js", "content/content.js"],
+      "css": ["content/content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "commands": {
+    "fill-now": {
+      "suggested_key": { "default": "Alt+Shift+F" },
+      "description": "Fill the current IRCTC page from the active trip"
+    }
+  }
+}
