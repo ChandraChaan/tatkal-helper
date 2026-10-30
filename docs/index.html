@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tatkal Helper</title>
+<meta name="description" content="Free, open-source Chrome extension that fills IRCTC passenger forms in one click and counts down to the Tatkal window. You still press every button.">
+<meta property="og:title" content="Tatkal Helper – one-click IRCTC form fill + Tatkal countdown">
+<meta property="og:description" content="Save passengers once, fill the IRCTC passenger page in a second, get alerts before the 10:00 / 11:00 IST window. No bots, you click.">
+<meta property="og:image" content="https://chandrachaan.github.io/tatkal-helper/assets/social-preview.png">
+<meta property="og:url" content="https://chandrachaan.github.io/tatkal-helper/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../icons/icon32.png">
+<style>
+  :root { --bg:#f8fafc; --card:#fff; --text:#0f172a; --muted:#475569; --line:#e2e8f0; --brand:#0e7490; --brand2:#155e75; --accent:#f59e0b; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0b1220; --card:#111a2b; --text:#e2e8f0; --muted:#94a3b8; --line:#243041; --brand:#22b8d6; --brand2:#0e7490; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  a { color: var(--brand); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+  header { padding: 18px 0; display:flex; align-items:center; justify-content:space-between; gap: 12px; }
+  .brand { display:flex; align-items:center; gap:10px; font-weight:800; font-size:18px; text-decoration:none; color:var(--text); }
+  .logo { width:30px; height:30px; border-radius:9px; background:var(--brand); color:#fff; display:grid; place-items:center; font-weight:900; }
+  nav a { margin-left: 18px; text-decoration:none; color:var(--muted); font-weight:600; }
+  .hero { padding: 48px 0 24px; display:grid; grid-template-columns: 1.1fr .9fr; gap: 36px; align-items:center; }
+  h1 { font-size: clamp(32px, 5vw, 52px); line-height:1.08; margin: 0 0 16px; letter-spacing:-.02em; }
+  .lead { font-size: 19px; color: var(--muted); margin: 0 0 24px; }
+  .cta { display:flex; flex-wrap:wrap; gap: 12px; align-items:center; }
+  .btn { display:inline-block; padding: 13px 22px; border-radius: 12px; font-weight: 700; text-decoration:none; border:1px solid var(--line); color:var(--text); background:var(--card); }
+  .btn.primary { background: var(--brand); border-color: var(--brand); color:#fff; } .btn.primary:hover { background: var(--brand2); }
+  .note { font-size: 13px; color: var(--muted); width:100%; }
+  .shot { width:100%; border-radius: 16px; box-shadow: 0 24px 60px rgba(2,6,23,.25); border:1px solid var(--line); }
+  .pledge { margin: 28px 0 0; padding: 14px 18px; border-left: 4px solid var(--accent); background: var(--card); border-radius: 10px; color: var(--muted); }
+  .pledge strong { color: var(--text); }
+  section { padding: 40px 0; }
+  h2 { font-size: 28px; margin: 0 0 20px; letter-spacing:-.01em; }
+  .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border:1px solid var(--line); border-radius: 14px; padding: 18px; }
+  .card h3 { margin: 0 0 6px; font-size: 17px; } .card p { margin:0; color: var(--muted); font-size: 15px; }
+  .steps { counter-reset: s; display:grid; gap: 12px; }
+  .step { display:grid; grid-template-columns: 40px 1fr; gap: 14px; align-items:start; background: var(--card); border:1px solid var(--line); border-radius: 14px; padding: 16px; }
+  .step::before { counter-increment: s; content: counter(s); width: 36px; height: 36px; border-radius: 50%; background: var(--brand); color:#fff; display:grid; place-items:center; font-weight:800; }
+  .step p { margin: 0; color: var(--muted); } .step strong { color: var(--text); }
+  code { background: var(--card); border:1px solid var(--line); border-radius: 6px; padding: 1px 6px; font-size: 90%; }
+  .shots { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .shots img { width:100%; border-radius: 14px; border:1px solid var(--line); box-shadow: 0 10px 30px rgba(2,6,23,.15); }
+  details { background: var(--card); border:1px solid var(--line); border-radius: 12px; padding: 14px 18px; margin-bottom: 10px; }
+  summary { font-weight: 700; cursor: pointer; } details p { color: var(--muted); margin: 10px 0 0; }
+  footer { padding: 32px 0 48px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); }
+  @media (max-width: 820px) { .hero { grid-template-columns: 1fr; } nav a:not(:last-child) { display:none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="brand" href="#"><span class="logo">T</span>Tatkal Helper</a>
+    <nav><a href="#how">How it works</a><a href="#faq">FAQ</a><a href="https://github.com/ChandraChaan/tatkal-helper">GitHub ★</a></nav>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h1>Fill IRCTC passenger forms in one click. Never miss the Tatkal window.</h1>
+      <p class="lead">Save your passengers once. On booking day the passenger page fills itself in a second, and a countdown with alerts tells you exactly when the 10:00 / 11:00 IST window opens for your date.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/ChandraChaan/tatkal-helper/releases/latest">⬇ Download for Chrome</a>
+        <a class="btn" href="https://github.com/ChandraChaan/tatkal-helper">View source on GitHub</a>
+        <span class="note">Free and open source (MIT). Works in Chrome, Edge, Brave and Arc. Install takes 2 minutes, no account needed.</span>
+      </div>
+      <p class="pledge"><strong>You still press every button.</strong> No auto-login, no auto-submit, no CAPTCHA tricks, no payment handling. Bots get IRCTC accounts suspended; this is an autofill, not a bot.</p>
+    </div>
+    <img class="shot" src="assets/popup-home.png" alt="Tatkal Helper popup showing the active trip, a countdown to the Tatkal window and a checklist">
+  </section>
+
+  <section>
+    <h2>What you get</h2>
+    <div class="grid">
+      <div class="card"><h3>Saved passengers</h3><p>Name, age, gender, berth and food preference, optional ID. Reuse them on every trip.</p></div>
+      <div class="card"><h3>One-click fill</h3><p>Search page and passenger page. Adds rows, fills every passenger, mobile, preferences, pre-selects UPI. Alt+Shift+F.</p></div>
+      <div class="card"><h3>Window countdown</h3><p>Knows the rule: one day before the journey, 10:00 IST for AC, 11:00 for non-AC. Badge shows minutes, then GO.</p></div>
+      <div class="card"><h3>Alerts and checklist</h3><p>Notifications 10 and 2 minutes before. A pre-window checklist so 9:59 is calm, not chaos.</p></div>
+      <div class="card"><h3>Private by design</h3><p>No server, no analytics, no network calls. Data stays in your browser. Export a backup any time.</p></div>
+      <div class="card"><h3>Degrades gracefully</h3><p>If IRCTC changes a field, the toast names it and the rest still fills. Fixes are usually a one-line selector.</p></div>
+    </div>
+  </section>
+
+  <section id="how">
+    <h2>How it works</h2>
+    <div class="steps">
+      <div class="step"><p><strong>Install.</strong> Download the zip, unzip, open <code>chrome://extensions</code>, turn on Developer mode, Load unpacked, pick the folder.</p></div>
+      <div class="step"><p><strong>Set up once.</strong> Add passengers, create a trip with route, date, class, quota and mobile. Add the same passengers to IRCTC's Master List as a backup.</p></div>
+      <div class="step"><p><strong>Booking day.</strong> Alerts fire. Log in, open the search page, press Fill, press Search. When the badge says GO, click your train and Book Now.</p></div>
+      <div class="step"><p><strong>Passenger page.</strong> Press Fill again. Review, Continue, solve the CAPTCHA yourself, approve the UPI request on your phone.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Screens</h2>
+    <div class="shots">
+      <img src="assets/widget-on-page.png" alt="Floating Tatkal Helper panel over a passenger details page, showing countdown and Fill button" style="grid-column: 1 / -1">
+      <img src="assets/popup-trip.png" alt="Trip editor">
+      <img src="assets/popup-passengers.png" alt="Saved passengers">
+      <img src="assets/popup-home-dark.png" alt="Home tab in dark mode">
+    </div>
+  </section>
+
+  <section id="faq">
+    <h2>FAQ</h2>
+    <details open><summary>Does it book the ticket automatically?</summary><p>No, and it never will. It fills form fields on pages you opened. You press Search, Book Now, Continue, the CAPTCHA and Pay.</p></details>
+    <details><summary>Will IRCTC block my account?</summary><p>IRCTC flags automated browsing such as Selenium or request bots. This extension does none of that; it behaves like a form autofill in your normal session. IRCTC's terms discourage all helper tools, so use your own judgement.</p></details>
+    <details><summary>Is it better than IRCTC's Master List?</summary><p>Use both. Master List saves most typing. Tatkal Helper also fills the mobile number, preferences and payment option, fills the search page, and adds the countdown, alerts and checklist.</p></details>
+    <details><summary>Why not on the Chrome Web Store?</summary><p>A listing needs review and may be rejected because of IRCTC's stance on helper tools. Load unpacked takes two minutes and needs no account.</p></details>
+    <details><summary>Where is my data stored?</summary><p>In <code>chrome.storage.local</code> on your machine. Nothing is sent anywhere.</p></details>
+  </section>
+
+  <footer>
+    <p>Not affiliated with IRCTC or Indian Railways. MIT licensed. <a href="https://github.com/ChandraChaan/tatkal-helper">Source, issues and releases on GitHub</a>. If it saved you a ticket, a star helps other travellers find it.</p>
+  </footer>
+</div>
+</body>
+</html>

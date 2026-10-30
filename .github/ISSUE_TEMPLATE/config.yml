@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Install instructions
+    url: https://github.com/ChandraChaan/tatkal-helper#install-in-chrome-2-minutes
+    about: Download the zip, unzip, Load unpacked.

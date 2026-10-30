@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Widget preview (fake chrome API)</title>
+<link rel="stylesheet" href="../content/content.css">
+<style>
+  body { margin: 0; font: 14px system-ui, sans-serif; background: #f1f5f9; color: #1e293b; }
+  .bar { background: #213d77; color: #fff; padding: 12px 24px; font-weight: 700; letter-spacing: .02em; }
+  .page { max-width: 900px; margin: 24px auto; background: #fff; border-radius: 8px; padding: 20px 24px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  h3 { margin: 0 0 12px; color: #213d77; font-size: 16px; }
+  .row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .row input, .row select { padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; width: 100%; box-sizing: border-box; }
+  .link { color: #0ea5e9; font-weight: 600; margin: 6px 0 16px; display: inline-block; }
+  .pref { color: #475569; margin: 6px 0; }
+  .btn { background: #f59e0b; color: #fff; border: 0; padding: 10px 24px; border-radius: 4px; font-weight: 700; }
+</style></head>
+<body>
+<div class="bar">IRCTC · Passenger Details (mock)</div>
+<div class="page">
+  <h3>Passenger Details</h3>
+  <div class="row"><input value="RAVI KUMAR"><input value="34"><select><option>Male</option></select><select><option>Lower</option></select><select><option>Veg</option></select></div>
+  <div class="row"><input value="ANITHA DEVI"><input value="31"><select><option>Female</option></select><select><option>Side Upper</option></select><select><option>Non Veg</option></select></div>
+  <span class="link">+ Add Passenger</span>
+  <h3>Contact Details</h3>
+  <div class="row"><input value="9876543210" style="grid-column: span 2"></div>
+  <div class="pref">☑ Consider for Auto Upgradation &nbsp;&nbsp; ☐ Book only if confirm berths are allotted</div>
+  <div class="pref">Travel insurance: ◉ No &nbsp; ○ Yes</div>
+  <div class="pref">Payment: ◉ Pay through BHIM/UPI &nbsp; ○ Cards / Net banking</div>
+  <br><button class="btn">Continue</button>
+</div>
+<script>
+  window.chrome = {
+    storage: { local: { get: async () => ({ passengers: [{id:'p1',name:'RAVI KUMAR'},{id:'p2',name:'ANITHA DEVI'}], trips: [{id:'t1',label:'Diwali home trip',from:'SC',to:'NDLS',date: new Date(Date.now()+2*86400000).toISOString().slice(0,10),cls:'3A',quota:'TQ',passengerIds:['p1','p2']}], activeTripId:'t1', settings:{showWidget:true} }) }, onChanged: { addListener(){} } },
+    runtime: { onMessage: { addListener(){} } }
+  };
+</script>
+<script src="../shared/tatkal.js"></script>
+<script src="../content/fill-core.js"></script>
+<script src="../content/content.js"></script>
+</body></html>

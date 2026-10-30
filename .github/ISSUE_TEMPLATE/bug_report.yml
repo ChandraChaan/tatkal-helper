@@ -1,0 +1,27 @@
+name: Fill problem or bug
+description: A field did not fill on IRCTC, or something else broke
+labels: [bug]
+body:
+  - type: dropdown
+    id: page
+    attributes:
+      label: Which page?
+      options: [Train search page, Passenger details page, Popup, Floating panel, Notifications / badge, Other]
+    validations: { required: true }
+  - type: textarea
+    id: toast
+    attributes:
+      label: What did the toast or popup status say?
+      description: Copy the exact text, e.g. "Mobile number field not found."
+    validations: { required: true }
+  - type: textarea
+    id: html
+    attributes:
+      label: Element HTML (optional, remove personal data)
+      description: Right-click the field on IRCTC → Inspect → right-click the element → Copy → Copy outerHTML.
+      render: html
+  - type: input
+    id: version
+    attributes:
+      label: Extension version and browser
+      placeholder: "1.0.0, Chrome 156 on macOS"

@@ -1,0 +1,16 @@
+name: Feature request
+description: Suggest an improvement
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help you on booking day?
+    validations: { required: true }
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Scope check
+      options:
+        - label: This does not ask the extension to submit, log in, solve CAPTCHAs or handle payment on its own.
+          required: true
